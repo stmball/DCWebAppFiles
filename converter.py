@@ -1,12 +1,10 @@
-import json
+import pandas as pd
+import numpy as np
 
-with open('cts_data_6.csv') as file:
-    data = file.read()
-    data = data.split('\n')[:100000]
-    output = []
-    for row in data[:-1]:
-        row = row.split(',')
-        output.append({'time': float(row[3]), 'actual': float(row[4]), 'predicted': float(row[2])})
+def convert(dataset):
+    data = pd.read_csv(dataset)
+    newdata = data[["Time", "Noisy Current"]].to_numpy()
+    np.savetxt(dataset, newdata, fmt='%f', delimiter=",")
+    return 1
 
-with open('output4.json', 'w') as outfile:
-    json.dump(output, outfile)
+print(convert("./Datasets/ten_channel_simulated"))
